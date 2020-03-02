@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class Product {
+class Product with ChangeNotifier{
   final String id;
   final String title;
   final String description;
@@ -14,5 +14,12 @@ class Product {
       @required this.description,
       @required this.price,
       @required this.imageUrl,
-      @required this.isFavorite});
+      this.isFavorite = false});
+
+  void toggleFavoriteStatus(){
+    isFavorite = !isFavorite;
+//    The notifyListeners method is almost like the
+//    setState class because it rebuilds widgets that look up to it
+    notifyListeners();
+  }
 }

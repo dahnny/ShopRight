@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/models/product.dart';
 import 'package:shop_app/providers/products_provider.dart';
 import 'package:shop_app/widgets/product_item.dart';
 
 class ProductsGrid extends StatelessWidget {
-
-   @override
+  @override
   Widget build(BuildContext context) {
     final providerData = Provider.of<ProductsProvider>(context);
     final products = providerData.items;
@@ -17,10 +15,15 @@ class ProductsGrid extends StatelessWidget {
           childAspectRatio: 3 / 2,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10),
-      itemBuilder: (ctx, index) => ProductItem(
-        id: products[index].id,
-        title: products[index].title,
-        imageUrl: products[index].imageUrl,
+//      The ChangeNotifierProvider provides the child widget with the necessary information needed
+      itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
+//        builder: (c) => products[index],
+      value: products[index],
+        child: ProductItem(
+//          id: products[index].id,
+//          title: products[index].title,
+//          imageUrl: products[index].imageUrl,
+            ),
       ),
       itemCount: products.length,
     );
