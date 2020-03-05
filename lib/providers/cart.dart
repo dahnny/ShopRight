@@ -13,12 +13,22 @@ class CartItem {
       @required this.price});
 }
 
+
+
 class Cart with ChangeNotifier {
   Map<String, CartItem> _items = {};
 
   Map<String, CartItem> get items {
 //    This returns all items
-    return {...items};
+    return {..._items};
+  }
+
+  double get totalAmount{
+    var total = 0.0;
+    _items.forEach((key, cartItem){
+      total += cartItem.price * cartItem.quantity;
+    });
+    return total;
   }
 
   void addItem(String productId, double price, String title) {
