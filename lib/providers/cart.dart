@@ -23,6 +23,7 @@ class Cart with ChangeNotifier {
     return {..._items};
   }
 
+  //This goes through the items in the map and gets the total amount
   double get totalAmount{
     var total = 0.0;
     _items.forEach((key, cartItem){
@@ -63,6 +64,7 @@ class Cart with ChangeNotifier {
   }
   void clear(){
     _items = {};
+    notifyListeners();
   }
 
   int get itemCount {
