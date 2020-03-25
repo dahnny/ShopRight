@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/products_provider.dart';
-class UserProductScreen extends StatelessWidget {
+import 'package:shop_app/widgets/user_product_item.dart';
 
+class UserProductScreen extends StatelessWidget {
+  static const routeName = "/userProduct";
 
   @override
   Widget build(BuildContext context) {
@@ -10,11 +12,13 @@ class UserProductScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Your products'),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.add), onPressed: (){})
-        ],
+        actions: <Widget>[IconButton(icon: Icon(Icons.add), onPressed: () {})],
       ),
-      body: ListView.builder(itemBuilder: (_, i) => ,itemCount: productData.items.length,),
+      body: ListView.builder(
+        itemBuilder: (_, i) => UserProductItem(
+            productData.items[i].title, productData.items[i].imageUrl),
+        itemCount: productData.items.length,
+      ),
     );
   }
 }
