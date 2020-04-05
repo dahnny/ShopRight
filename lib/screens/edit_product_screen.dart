@@ -87,8 +87,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
     //This is used to save the current state of the form
     _form.currentState.save();
-    Provider.of<ProductsProvider>(context, listen: false)
-        .addProduct(_editedProduct);
+
+    if(_editedProduct.id != null ){
+      Provider.of<ProductsProvider>(context).updateProduct(_editedProduct.id, _editedProduct);
+    }
+    else {
+      Provider.of<ProductsProvider>(context)
+          .addProduct(_editedProduct);
+    }
     Navigator.of(context).pop();
   }
 
@@ -118,7 +124,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
               },
               onSaved: (value) {
                 _editedProduct = Product(
-                    id: null,
+                    id: _editedProduct.id,
+                    isFavorite: _editedProduct.isFavorite,
                     title: value,
                     description: _editedProduct.description,
                     price: _editedProduct.price,
@@ -143,7 +150,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
               },
               onSaved: (value) {
                 _editedProduct = Product(
-                    id: null,
+                    id: _editedProduct.id,
+                    isFavorite: _editedProduct.isFavorite,
                     title: _editedProduct.title,
                     description: _editedProduct.description,
                     price: double.parse(value),
@@ -171,7 +179,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
               focusNode: _descriptionFocusNode,
               onSaved: (value) {
                 _editedProduct = Product(
-                    id: null,
+                    id: _editedProduct.id,
+                    isFavorite: _editedProduct.isFavorite,
                     title: _editedProduct.title,
                     description: value,
                     price: _editedProduct.price,
@@ -211,7 +220,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     controller: _imageUrlController,
                     onSaved: (value) {
                       _editedProduct = Product(
-                          id: null,
+                          id: _editedProduct.id,
+                          isFavorite: _editedProduct.isFavorite,
                           title: _editedProduct.title,
                           description: _editedProduct.description,
                           price: _editedProduct.price,

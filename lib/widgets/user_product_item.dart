@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/providers/products_provider.dart';
 import 'package:shop_app/screens/edit_product_screen.dart';
 
 class UserProductItem extends StatelessWidget {
@@ -10,6 +12,7 @@ class UserProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final productData = Provider.of<ProductsProvider>(context, listen: false);
     return Card(
       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
       child: ListTile(
@@ -29,7 +32,9 @@ class UserProductItem extends StatelessWidget {
                   color: Theme.of(context).primaryColor),
               IconButton(
                 icon: Icon(Icons.delete),
-                onPressed: () {},
+                onPressed: () {
+                  productData.deleteProduct(id);
+                },
                 color: Theme.of(context).errorColor,
               )
             ],
