@@ -24,10 +24,10 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _isInit = true;
   var _isLoading = false;
 
-
   @override
   void initState() {
-    Future.delayed(Duration.zero).then((_){
+//    this future.delayed enables this to work in initstate
+    Future.delayed(Duration.zero).then((_) {
       if (_isInit) {
         setState(() {
           _isLoading = true;
@@ -41,12 +41,6 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       _isInit = false;
     });
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies(){
-
-    super.didChangeDependencies();
   }
 
   @override

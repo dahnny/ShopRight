@@ -10,6 +10,7 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Your Cart'),
@@ -35,16 +36,7 @@ class CartScreen extends StatelessWidget {
                     ),
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
-                  FlatButton(
-                      onPressed: () {
-                        Provider.of<Orders>(context, listen: false).addOrders(
-                            cart.items.values.toList(), cart.totalAmount);
-                        cart.clear();
-                      },
-                      child: Text(
-                        'ORDER NOW',
-                        style: TextStyle(color: Theme.of(context).primaryColor),
-                      ))
+                  OrderButton(cart: cart)
                 ],
               ),
             ),
@@ -66,5 +58,62 @@ class CartScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class OrderButton extends StatefulWidget {
+  const OrderButton({
+    Key key,
+    @required this.cart,
+  }) : super(key: key);
+
+  final Cart cart;
+
+  @override
+  _OrderButtonState createState() => _OrderButtonState();
+}
+
+class _OrderButtonState extends State<OrderButton> {
+  var isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+        onPressed: (widget.cart.totalAmount <= 0 || isLoading)
+            ? null
+            : () async {
+                try {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  await Provider.of<Orders>(context, listen: false).addOrders(
+                      widget.cart.items.values.toList(),
+                      widget.cart.totalAmount);
+                } catch (error) {
+                  await showDialog(
+                      context: context,
+                      builder: (ctx) {
+                        return AlertDialog(
+                          title: Text('An error occurred'),
+                          content: Text('Something went wrong'),
+                          actions: <Widget>[
+                            FlatButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Ok'))
+                          ],
+                        );
+                      });
+                }
+                setState(() {
+                  isLoading = false;
+                });
+                widget.cart.clear();
+              },
+        child: Text(
+          'ORDER NOW',
+          style: TextStyle(color: Theme.of(context).primaryColor),
+        ));
   }
 }
