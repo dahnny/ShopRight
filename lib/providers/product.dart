@@ -24,16 +24,17 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> toggleFavoriteStatus() async {
+  Future<void> toggleFavoriteStatus(String token, String userId) async {
     final oldStatus = isFavorite;
     isFavorite = !isFavorite;
 //    The notifyListeners method is almost like the
 //    setState class because it rebuilds widgets that look up to it
     notifyListeners();
-    final url = "https://shopapp-de764.firebaseio.com/products/$id.json";
+//    this url is used to store the favorite status of a particular user
+    final url =
+        "https://shopapp-de764.firebaseio.com/userFavorites/$userId/$id.json?auth=$token";
     try {
-      final response =
-          await http.patch(url, body: json.encode({'isFavorite': isFavorite}));
+      final response = await http.put(url, body: json.encode(isFavorite));
 //      checks if the status code returns an error
       if (response.statusCode >= 400) {
         _favStatus(oldStatus);

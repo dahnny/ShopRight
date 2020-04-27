@@ -22,8 +22,12 @@ class Orders extends ChangeNotifier {
     return [..._orders];
   }
 
+  final String token;
+
+  Orders(this.token, this._orders);
+
   Future<void> fetchAndSetOrders() async {
-    const url = "https://shopapp-de764.firebaseio.com/orders.json";
+    final url = "https://shopapp-de764.firebaseio.com/orders.json?auth=$token";
     try {
       final response = await http.get(url);
 //      get the body of the response which returns a map containing the id and the  body
@@ -50,7 +54,7 @@ class Orders extends ChangeNotifier {
   }
 
   Future<void> addOrders(List<CartItem> cartProducts, double total) async {
-    const url = "https://shopapp-de764.firebaseio.com/orders.json";
+    final url = "https://shopapp-de764.firebaseio.com/orders.json?auth=$token";
     final timeStamp = DateTime.now();
     try {
       final response = await http.post(url,
