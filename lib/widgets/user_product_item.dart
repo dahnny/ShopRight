@@ -28,6 +28,7 @@ class UserProductItem extends StatelessWidget {
               IconButton(
                   icon: Icon(Icons.edit),
                   onPressed: () {
+//                    this passes the id to the screen it is being pushed to
                     Navigator.of(context).pushNamed(EditProductScreen.routeName, arguments: id);
                   },
                   color: Theme.of(context).primaryColor),

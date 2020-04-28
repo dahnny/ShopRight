@@ -28,7 +28,7 @@ class ProductsProvider with ChangeNotifier {
 //      description: 'Warm and cozy - exactly what you need for the winter.',
 //      price: 19.99,
 //      imageUrl:
-//          'https://live.staticflickr.com/4043/4438260868_cc79b3369d_z.jpg',
+//          'https://live.staticflickr.com/4043/4438260868 cc79b3369d z.jpg',
 //    ),
 //    Product(
 //      id: 'p4',
@@ -69,6 +69,7 @@ class ProductsProvider with ChangeNotifier {
             'description': product.description,
             'imageUrl': product.imageUrl,
             'price': product.price,
+            'creatorId':userId
           }));
 
 //      This executes only when it has gotten feedback from the post request
@@ -85,8 +86,9 @@ class ProductsProvider with ChangeNotifier {
     }
   }
 
-  Future<void> fetchAndSetProducts() async {
-    var url = "https://shopapp-de764.firebaseio.com/products.json?auth=$token";
+  Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
+    String filterString = filterByUser ? "orderBy=\"creatorId\"&equalTo=\"$userId\"" : '';
+    var url = "https://shopapp-de764.firebaseio.com/products.json?auth=$token&$filterString";
 
     try {
       final response = await http.get(url);
@@ -125,7 +127,7 @@ class ProductsProvider with ChangeNotifier {
     print(prodIndex.toString());
     if (prodIndex >= 0) {
       //    This url contains the path to the specific id in the firebase database
-      final url = "https://shopapp-de764.firebaseio.com/products/$id.json";
+      final url = "https://shopapp-de764.firebaseio.com/products/$id.json?auth=$token";
 
       await http.patch(url,
           body: json.encode({
@@ -143,7 +145,7 @@ class ProductsProvider with ChangeNotifier {
   }
 
   Future<void> deleteProduct(String id) async {
-    final url = "https://shopapp-de764.firebaseio.com/products/$id.json";
+    final url = "https://shopapp-de764.firebaseio.com/products/$id.json?auth=$token";
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
 //    Remove the product before waiting for a response from the await

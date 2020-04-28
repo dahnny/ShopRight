@@ -63,6 +63,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     if (_isInit) {
+//      This gets the id from the previous screen
       final productId = ModalRoute.of(context).settings.arguments as String;
       if (productId != null) {
         _editedProduct =
