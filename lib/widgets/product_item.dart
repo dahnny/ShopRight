@@ -31,9 +31,17 @@ class ProductItem extends StatelessWidget {
               arguments: product.id,
             );
           },
-          child: Image.network(
-            product.imageUrl,
-            fit: BoxFit.cover,
+          child:
+//              The hero widget gives the image a nice transition into the next page
+//              This fade in gives a transition from a placeholder to the main image
+          Hero(
+            tag: product.id,
+            child: FadeInImage(
+              placeholder: AssetImage('assets/images/product-placeholder.png'),
+//            This is the main image
+              image: NetworkImage(product.imageUrl),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         footer: GridTileBar(
@@ -63,9 +71,11 @@ class ProductItem extends StatelessWidget {
                 Scaffold.of(context).showSnackBar(SnackBar(
                   content: Text('Added item to cart'),
                   duration: Duration(seconds: 2),
-                  action: SnackBarAction(label: 'UNDO', onPressed: (){
-                    cart.removeSingleItem(product.id);
-                  }),
+                  action: SnackBarAction(
+                      label: 'UNDO',
+                      onPressed: () {
+                        cart.removeSingleItem(product.id);
+                      }),
                 ));
               }),
         ),
